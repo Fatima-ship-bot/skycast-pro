@@ -41,7 +41,7 @@ const App = () => {
           <Toaster />
           <Sonner />
           {splash && <SplashScreen onDone={() => setSplash(false)} />}
-          <BrowserRouter>
+          <BrowserRouter basename={process.env.GITHUB_PAGES ? "/skycast-pro" : "/"}>
             <Routes>
               <Route path="/auth" element={<Auth />} />
               <Route element={<AppShell />}>
