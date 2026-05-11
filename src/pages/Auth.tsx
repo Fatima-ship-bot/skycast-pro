@@ -35,16 +35,6 @@ export default function Auth() {
     const { error } = await signIn(ev.data, pv.data);
     setBusy(false);
     
-    // Development: Ignore email confirmation errors and attempt navigation anyway
-    if (error && error.includes("Email not confirmed")) {
-      toast.info("Confirming your email...");
-      setTimeout(() => {
-        toast.success("Welcome back!");
-        nav("/");
-      }, 500);
-      return;
-    }
-    
     if (error) return toast.error(error);
     toast.success("Welcome back!");
     nav("/");
