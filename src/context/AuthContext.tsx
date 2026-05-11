@@ -20,6 +20,7 @@ interface AuthState {
 }
 
 const AuthCtx = createContext<AuthState | null>(null);
+const DEV_SESSION_KEY = 'skycast_dev_session';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -32,7 +33,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setProfile(data as Profile | null);
   };
 
+  // Check localStorage for dev session on mount
   useEffect(() => {
+    const checkDevSession = () => {
+      try {
+        const stored = localStorage.getItem(DEV_SESSION_KEY);
+        if (stored) {
+          const devSession = JSON.parse(stored);
+          setSession(devSession as any);
+          setUser(devSession.user);
+          if (devSession.user) {
+            setTimeout(() => loadProfile(devSession.user.id), 0);
+          }
+          setLoading(false);
+          return true;
+        }
+      } catch {
+        localStorage.removeItem(DEV_SESSION_KEY);
+      }
+      return false;
+    };
+
+    if (checkDevSession()) return;
+
     const { data: sub } = supabase.auth.onAuthStateChange((_event, sess) => {
       setSession(sess);
       setUser(sess?.user ?? null);
@@ -70,19 +93,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     
     // Development: Allow unconfirmed emails to sign in
     if (error?.message?.includes("Email not confirmed")) {
-      // Create a mock session for development
+      // Create a persistent dev session
       const mockSession = {
         user: { 
-          id: email.replace(/[^a-z0-9]/g, ''),
+          id: email.replace(/[^a-z0-9]/g, 'a'),
           email,
           email_confirmed_at: new Date().toISOString(),
-          user_metadata: { email }
+          user_metadata: { email },
+          aud: 'authenticated',
+          role: 'authenticated',
         },
         access_token: 'dev-token-' + Date.now(),
         refresh_token: 'dev-refresh-' + Date.now(),
+        expires_in: 3600,
+        token_type: 'bearer',
+        created_at: Date.now(),
       };
       
-      // Manually set the session state
+      // Store in localStorage so it persists across navigations
+      localStorage.setItem(DEV_SESSION_KEY, JSON.stringify(mockSession));
+      
+      // Set session state
       setSession(mockSession as any);
       setUser(mockSession.user as any);
       await loadProfile(mockSession.user.id);
@@ -93,11 +124,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (error) return { error: error.message };
     
     // Normal flow - user is set by auth state listener
+    // Clear any dev session on successful real login
+    localStorage.removeItem(DEV_SESSION_KEY);
     return { error: null };
   };
 
   const signOut = async () => {
+    localStorage.removeItem(DEV_SESSION_KEY);
     await supabase.auth.signOut();
+    setUser(null);
+    setSession(null);
+    setProfile(null);
   };
 
   const refreshProfile = async () => {
