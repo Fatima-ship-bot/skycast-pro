@@ -31,18 +31,18 @@ export default function Footer() {
         <div>
           <h4 className="font-display font-semibold mb-3">Project</h4>
           <p className="text-sm text-muted-foreground mb-2">
-            Final Year Software Engineering Project
+            Final Year Web Development Project
           </p>
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <Github className="h-4 w-4" />
-            <span>v1.0 · 2025</span>
+            <span>v1.0 · 2026</span>
           </div>
         </div>
       </div>
 
       <div className="border-t border-white/10">
         <div className="container py-4 flex flex-col md:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
-          <span>© 2025 SkyCast Pro. All rights reserved.</span>
+          <span>© 2026 SkyCast Pro. All rights reserved.</span>
           <span className="flex items-center gap-1.5">
             Built with <Heart className="h-3 w-3 fill-accent text-accent" /> using React, Tailwind & Framer Motion
           </span>

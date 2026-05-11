@@ -27,7 +27,7 @@ export default function About() {
     <div className="container py-8 md:py-12 max-w-5xl space-y-10">
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="text-center space-y-3">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium">
-          <Sparkles className="h-3 w-3" /> Final Year Software Engineering Project
+          <Sparkles className="h-3 w-3" /> Final Year Web Development Project
         </span>
         <h1 className="font-display text-4xl md:text-6xl font-bold tracking-tight">
           About <span className="gradient-text">SkyCast Pro</span>
@@ -141,7 +141,7 @@ export default function About() {
           </div>
           <div>
             <div className="font-display font-semibold text-lg">Software Engineering Student</div>
-            <div className="text-sm text-muted-foreground">Final Year Project · 2025</div>
+            <div className="text-sm text-muted-foreground">Final Year Project · 2026</div>
             <div className="text-xs text-muted-foreground mt-1">Replace this placeholder with your name and university.</div>
           </div>
         </div>
