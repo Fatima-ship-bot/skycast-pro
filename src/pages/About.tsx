@@ -140,7 +140,7 @@ export default function About() {
             SE
           </div>
           <div>
-            <div className="font-display font-semibold text-lg">Software Engineering Student</div>
+            <div className="font-display font-semibold text-lg">Computer Science Student</div>
             <div className="text-sm text-muted-foreground">Final Year Project · 2026</div>
             <div className="text-xs text-muted-foreground mt-1">Replace this placeholder with your name and university.</div>
           </div>
